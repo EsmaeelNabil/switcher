@@ -1,1 +1,9 @@
 # switcher
+
+### Usage
+- Press `Alt` twice.
+- Write any `two consecutive` letters of a running app.
+- App only one exists, it will be `switched to`, otherwise, write more or `press Enter/Return`
+
+#### Download for Macos
+- [Download](https://github.com/EsmaeelNabil/switcher/releases/download/v0.0.1/switcher.dmg)
