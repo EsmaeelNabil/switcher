@@ -2,22 +2,21 @@
 //  SearchPopupView.swift
 //  switcher
 //
-//  Created by Esmaeel Moustafa on 07.02.25.
+//  Created by Esmaeel Moustafa on 11.02.25.
 //
 
-import Foundation
 import SwiftUI
 import Cocoa
-import CoreGraphics
 
+/// A SwiftUI view displaying the search popup.
 struct SearchPopupView: View {
-    @ObservedObject var model: SearchModel
+    /// The view model driving the search logic.
+    @ObservedObject var viewModel: SearchViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            
-            if !model.text.isEmpty {
-                Text(model.text)
+            if !viewModel.text.isEmpty {
+                Text(viewModel.text)
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
                     .background(Color.black.opacity(0.1))
@@ -25,23 +24,22 @@ struct SearchPopupView: View {
                     .shadow(color: Color.black, radius: -10, x: 0, y: 10)
             }
             
-            ForEach(model.suggestions.indices, id: \.self) { index in
-                let suggestion = model.suggestions[index]
+            ForEach(viewModel.suggestions.indices, id: \.self) { index in
+                let suggestion = viewModel.suggestions[index]
                 HStack(spacing: 8) {
                     if let icon = suggestion.icon {
                         Image(nsImage: icon)
                             .resizable()
                             .frame(width: 16, height: 16)
                     }
-                    highlightedText(for: suggestion.name, query: model.text)
+                    highlightedText(for: suggestion.name, query: viewModel.text)
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(index == model.selectedIndex ? Color.blue.opacity(0.3) : Color.clear)
+                .background(index == viewModel.selectedIndex ? Color.blue.opacity(0.3) : Color.clear)
                 .cornerRadius(6)
                 .contentShape(Rectangle())
-                .onTapGesture { model.selectedIndex = index }
-                
+                .onTapGesture { viewModel.selectedIndex = index }
             }
         }
         .padding()
@@ -52,7 +50,7 @@ struct SearchPopupView: View {
     }
 }
 
-// Glass Effect Background
+/// A NSVisualEffectView wrapper to provide a blur background.
 struct BlurView: NSViewRepresentable {
     func makeNSView(context: Context) -> NSVisualEffectView {
         let view = NSVisualEffectView()
@@ -63,4 +61,8 @@ struct BlurView: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
+}
+
+#Preview {
+    SearchPopupView(viewModel: SearchViewModel())
 }
